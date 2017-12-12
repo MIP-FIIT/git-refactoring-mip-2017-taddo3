@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-FILE *v (int *vykonat){
+FILE * vypis_suboru (int *vykonat){
 	FILE *predaj;
 	int i, riadky = 1;
 	char znak, *vypis_riadok;
@@ -46,7 +45,7 @@ FILE *v (int *vykonat){
 }
 
 
-void o(FILE *predaj, int zad_datum){
+void vypis_odmien (FILE *predaj, int zad_datum){
 	char meno[50], SPZ[8], znak, akt_dat[9];
 	int riadky = 1, i, j = 10000000, k, typ, datum, akt_dat_int = 0;
 	float cena, odmena;
@@ -109,7 +108,7 @@ void o(FILE *predaj, int zad_datum){
 }
 
 
-char** n(char **SPZ, int *dealloc, FILE *predaj, int *SPZ_pocet){
+char** nacitat_SPZ_do_pola (char **SPZ, int *dealloc, FILE *predaj, int *SPZ_pocet){
 	int i, j, riadky = 1;
 	char znak;
 	
@@ -165,7 +164,7 @@ char** n(char **SPZ, int *dealloc, FILE *predaj, int *SPZ_pocet){
 }
 
 
-void s(char **SPZ, int dealloc, int SPZ_pocet){
+void vypis_SPZ_z_pola (char **SPZ, int dealloc, int SPZ_pocet){
 	int i;
 	
 	// Vypis pola SPZtiek
@@ -189,17 +188,17 @@ int main(){
 		scanf("%c", &volaj);
 		switch(volaj){
 			case 'v': 
-				predaj = v(&vykonat);
+				predaj = vypis_suboru (&vykonat);
 				break;
 			case 'o':
 				scanf("%d", &datum);
-				if (vykonat == 1) o(predaj, datum);
+				if (vykonat == 1) vypis_odmien (predaj, datum);
 				break;
 			case 'n':
-				if (vykonat == 1) SPZ = n(SPZ, &dealloc, predaj, &SPZ_pocet);
+				if (vykonat == 1) SPZ = nacitat_SPZ_do_pola (SPZ, &dealloc, predaj, &SPZ_pocet);
 				break;
 			case 's':
-				s(SPZ, dealloc, SPZ_pocet);
+				vypis_SPZ_z_pola (SPZ, dealloc, SPZ_pocet);
 				break;
 			case 'k': 
 				i = 0;
