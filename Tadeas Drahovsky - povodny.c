@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-FILE * vypis_suboru (int *vykonat){
+FILE* otvorenie_a_vypis_suboru (int *vykonat){
 	FILE *predaj;
 	int i, riadky = 1;
 	char znak, *vypis_riadok;
@@ -179,41 +179,40 @@ void vypis_SPZ_z_pola (char **SPZ, int dealloc, int SPZ_pocet){
 
 
 int main(){
-	FILE *predaj;
-	int i = 1, vykonat = 0, dealloc = 0, SPZ_pocet, datum;
-	char volaj, **SPZ;
+	FILE *subor;
+	int otvoreny_subor = 0, vytvorene_pole = 0, pocet_SPZ, datum, poradie_v_poli;
+	char pismenko, **pole_SPZ;
 	
 	// Vyber jednotlivych funkcii
-	while (i == 1){
-		scanf("%c", &volaj);
-		switch(volaj){
+	while (1){
+		
+		scanf("%c", &pismenko);
+		switch(pismenko){
 			case 'v': 
-				predaj = vypis_suboru (&vykonat);
+				subor = otvorenie_a_vypis_suboru (&otvoreny_subor);
 				break;
 			case 'o':
 				scanf("%d", &datum);
-				if (vykonat == 1) vypis_odmien (predaj, datum);
+				if (otvoreny_subor == 1) vypis_odmien (subor, datum);
 				break;
 			case 'n':
-				if (vykonat == 1) SPZ = nacitat_SPZ_do_pola (SPZ, &dealloc, predaj, &SPZ_pocet);
+				if (otvoreny_subor == 1) pole_SPZ = nacitat_SPZ_do_pola (pole_SPZ, &vytvorene_pole, subor, &pocet_SPZ);
 				break;
 			case 's':
-				vypis_SPZ_z_pola (SPZ, dealloc, SPZ_pocet);
+				vypis_SPZ_z_pola (pole_SPZ, vytvorene_pole, pocet_SPZ);
 				break;
 			case 'k': 
-				i = 0;
-				break;
+				// Vycistenie pamate + zatvorenie suboru
+				if (vytvorene_pole == 1){
+					for (poradie_v_poli = 0; poradie_v_poli < pocet_SPZ; poradie_v_poli++){
+						free(pole_SPZ[poradie_v_poli]);
+					}
+					free(pole_SPZ);
+				}
+				if (otvoreny_subor == 1) fclose(subor);
+				
+				return 0;
+				
 		}
 	}
-	
-	// Vycistenie pamate + zatvorenie suboru
-	if (dealloc == 1){
-		for (i=0; i<SPZ_pocet; i++){
-			free(SPZ[i]);
-		}
-		free(SPZ);
-	}
-	if (vykonat == 1) fclose(predaj);
-	
-	return 0;
 }
