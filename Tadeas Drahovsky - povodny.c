@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 FILE *v (int *vykonat){
 	FILE *predaj;
 	int i, riadky = 1;
