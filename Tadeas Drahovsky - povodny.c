@@ -108,59 +108,59 @@ void vypis_odmien (FILE *subor, int datum){
 }
 
 
-char** nacitat_SPZ_do_pola (char **SPZ, int *dealloc, FILE *predaj, int *SPZ_pocet){
-	int i, j, riadky = 1;
+char** nacitat_SPZ_do_pola (char **pole_SPZ, int *vytvorene_pole, FILE *subor, int *pocet_SPZ){
+	int i, j, pocet_riadkov = 1;
 	char znak;
 	
 	// Spocitanie riadkov v subore
-	fseek(predaj, 0, SEEK_SET );
+	fseek(subor, 0, SEEK_SET );
 	do{
-		znak = fgetc(predaj);
-		if(znak == '\n') riadky++;
+		znak = fgetc(subor);
+		if(znak == '\n') pocet_riadkov++;
 	}
 	while (znak != EOF);
 	
 	// Pocet SPZ v subore
-	riadky = (riadky - 1) / 6;
-	*SPZ_pocet = (riadky + 1);
+	pocet_riadkov = (pocet_riadkov - 1) / 6;
+	*pocet_SPZ = (pocet_riadkov + 1);
 	
 	// Dealokovanie predchadzajuceho pola SPZtiek, ak uz raz bolo vytvorene
-	if (*dealloc == 1){
-		for (i=0; i<(*SPZ_pocet); i++){
-			free(SPZ[i]);
+	if (*vytvorene_pole == 1){
+		for (i = 0; i < (*pocet_SPZ); i++){
+			free(pole_SPZ[i]);
 		}
-		free(SPZ);
+		free(pole_SPZ);
 	}
-	*dealloc = 1;
+	*vytvorene_pole = 1;
 	
 	// Alokovanie dvojrozmerneho pola pre SPZtky
-	SPZ = (char **) malloc((*SPZ_pocet)* sizeof(char *));
-	for (i=0; i<(*SPZ_pocet); i++){
-		SPZ[i] = (char *) malloc(8* sizeof(char));
+	pole_SPZ = (char **) malloc((*pocet_SPZ)* sizeof(char *));
+	for (i = 0; i < (*pocet_SPZ); i++){
+		pole_SPZ[i] = (char *) malloc(8* sizeof(char));
 	}
 	
 	
 	// Naplnenie pola SPZtkami
-	fseek(predaj, 0, SEEK_SET );
-	for (i=0; i<(*SPZ_pocet); i++){
+	fseek(subor, 0, SEEK_SET );
+	for (i = 0; i < (*pocet_SPZ); i++){
 		do{
-			znak = fgetc(predaj);
+			znak = fgetc(subor);
 			if(znak == '\n') break;
 		}
 		while (znak != EOF);
 		
-		fgets(SPZ[i], 8, predaj);
+		fgets(pole_SPZ[i], 8, subor);
 		
-		for (j=0; j<5; j++){
+		for (j = 0; j < 5; j++){
 			do{
-				znak = fgetc(predaj);
+				znak = fgetc(subor);
 				if(znak == '\n') break;
 			}
 			while (znak != EOF);	
 		}
 	}
 	
-	return SPZ;
+	return pole_SPZ;
 }
 
 
