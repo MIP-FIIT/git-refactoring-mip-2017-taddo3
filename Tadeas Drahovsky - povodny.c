@@ -1,47 +1,47 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-FILE* otvorenie_a_vypis_suboru (int *vykonat){
-	FILE *predaj;
-	int i, riadky = 1;
-	char znak, *vypis_riadok;
+FILE* otvorenie_a_vypis_suboru (int *otvoreny_subor){
+	FILE *subor;
+	int cislo_riadku, pocet_riadkov = 1;
+	char znak, *jeden_riadok;
 	
 	// Test + otvorenie suboru
-	if((predaj = fopen("predaj.txt", "r")) == NULL){
+	if((subor = fopen("predaj.txt", "r")) == NULL){
 		printf("Neotvoreny subor\n");
 		return;
 	}
-	else *vykonat = 1;
+	else *otvoreny_subor = 1;
 	
 	// Spocitanie riadkov v subore
 	do{
-		znak = fgetc(predaj);
-		if(znak == '\n') riadky++;
+		znak = fgetc(subor);
+		if(znak == '\n') pocet_riadkov++;
 	}
 	while (znak != EOF);
 	
-	fseek(predaj, 0, SEEK_SET );
-	vypis_riadok = (char *) malloc(50* sizeof(char));
+	fseek(subor, 0, SEEK_SET );
+	jeden_riadok = (char *) malloc(50* sizeof(char));
 	
 	// Vypis suboru
-	for (i=0; i<riadky; i++){
-		fgets(vypis_riadok, 50, predaj);
-		switch (i%6){
-			case 0: printf("meno priezvisko: %s", vypis_riadok);
+	for (cislo_riadku = 0; cislo_riadku < pocet_riadkov; cislo_riadku++){
+		fgets(jeden_riadok, 50, subor);
+		switch (cislo_riadku % 6){
+			case 0: printf("meno priezvisko: %s", jeden_riadok);
 				break;
-			case 1: printf("SPZ: %s", vypis_riadok);
+			case 1: printf("SPZ: %s", jeden_riadok);
 				break;
-			case 2: printf("typ auta: %s", vypis_riadok);
+			case 2: printf("typ auta: %s", jeden_riadok);
 				break;
-			case 3: printf("cena: %s", vypis_riadok);
+			case 3: printf("cena: %s", jeden_riadok);
 				break;
-			case 4: printf("datum: %s\n", vypis_riadok);
+			case 4: printf("datum: %s\n", jeden_riadok);
 				break;
 		}
 	}
+	free(jeden_riadok);
 	
-	free(vypis_riadok);
-	return predaj;
+	return subor;
 }
 
 
