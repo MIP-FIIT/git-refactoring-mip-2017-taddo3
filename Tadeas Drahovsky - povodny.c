@@ -45,60 +45,60 @@ FILE* otvorenie_a_vypis_suboru (int *otvoreny_subor){
 }
 
 
-void vypis_odmien (FILE *predaj, int zad_datum){
-	char meno[50], SPZ[8], znak, akt_dat[9];
-	int riadky = 1, i, j = 10000000, k, typ, datum, akt_dat_int = 0;
-	float cena, odmena;
+void vypis_odmien (FILE *subor, int datum){
+	char meno_zo_suboru[50], SPZ_zo_suboru[8], znak, akt_dat[9];
+	int pocet_riadkov = 1, cislo_riadku, j = 10000000, znak_v_poli, typ_vozidla, akt_dat_int = 0;
+	float cena_vozidla, odmena_pre_predajcu;
 	
 	// Zistenie riadkov v subore
-	fseek(predaj, 0, SEEK_SET );
+	fseek(subor, 0, SEEK_SET );
 	do{
-		znak = fgetc(predaj);
-		if(znak == '\n') riadky++;
+		znak = fgetc(subor);
+		if(znak == '\n') pocet_riadkov++;
 	}
 	while (znak != EOF);
 	
 	// Ziskanie casu
-	akt_dat_int = zad_datum;
+	akt_dat_int = datum;
 	
 	
 	// Vypis dokumentu podla pravidiel
-	fseek(predaj, 0, SEEK_SET );
-	for (i=0; i<riadky; i++){
-		switch (i%6){
-			case 0: fgets(meno, 50, predaj);
+	fseek(subor, 0, SEEK_SET );
+	for (cislo_riadku = 0; cislo_riadku < pocet_riadkov; cislo_riadku++){
+		switch (cislo_riadku % 6){
+			case 0: fgets(meno_zo_suboru, 50, subor);
 				break;
-			case 1: fgets(SPZ, 8, predaj);
+			case 1: fgets(SPZ_zo_suboru, 8, subor);
 				break;
-			case 2: fscanf(predaj, "%d", &typ);
+			case 2: fscanf(subor, "%d", &typ_vozidla);
 				break;
-			case 3: fscanf(predaj, "%f", &cena);
+			case 3: fscanf(subor, "%f", &cena_vozidla);
 				break;
-			case 4: fscanf(predaj, "%d", &datum);
-				fgetc(predaj);
+			case 4: fscanf(subor, "%d", &datum);
+				fgetc(subor);
 				
 				if ((akt_dat_int - datum) >= 10000){
-					if (typ == 1) odmena = cena * 15 / 1000;
-					else odmena = cena * 22 / 1000;
+					if (typ_vozidla == 1) odmena_pre_predajcu = cena_vozidla * 15 / 1000;
+					else odmena_pre_predajcu = cena_vozidla * 22 / 1000;
 					
-					for (k=0; k<50; k++){
-						if (meno[k] == '\n') break;
-						putchar(meno[k]);
+					for (znak_v_poli = 0; znak_v_poli < 50; znak_v_poli++){
+						if (meno_zo_suboru[znak_v_poli] == '\n') break;
+						putchar(meno_zo_suboru[znak_v_poli]);
 					}
 					putchar(' ');
 					
-					for (k=0; k<8; k++){
-						if (SPZ[k] == '\n') break;
-						putchar(SPZ[k]);
+					for (znak_v_poli = 0; znak_v_poli < 8; znak_v_poli++){
+						if (SPZ_zo_suboru[znak_v_poli] == '\n') break;
+						putchar(SPZ_zo_suboru[znak_v_poli]);
 					}
 					putchar(' ');
 					
-					printf("%.2f", odmena);
+					printf("%.2f", odmena_pre_predajcu);
 					putchar('\n');
 				}
 				
 				do{
-					znak = fgetc(predaj);
+					znak = fgetc(subor);
 					if(znak == '\n') break;
 				}
 				while (znak != EOF);
