@@ -26,7 +26,7 @@ FILE* otvorenie_a_vypis_suboru (int *otvoreny_subor){
 	int cislo_riadku, pocet_riadkov;
 	char znak, *jeden_riadok;
 	
-	// Test + otvorenie suboru
+
 	if((subor = fopen("predaj.txt", "r")) == NULL){
 		printf("Neotvoreny subor\n");
 		return;
@@ -35,10 +35,10 @@ FILE* otvorenie_a_vypis_suboru (int *otvoreny_subor){
 	
 	pocet_riadkov = pocet_riadkov_v_subore(subor);
 	
-	//rewind(subor);
+	
 	jeden_riadok = (char *) malloc(50* sizeof(char));
 	
-	// Vypis suboru
+	
 	for (cislo_riadku = 0; cislo_riadku < pocet_riadkov; cislo_riadku++){
 		fgets(jeden_riadok, 50, subor);
 		switch (cislo_riadku % 6){
@@ -65,12 +65,12 @@ void vypis_odmien (FILE *subor, int zadany_datum){
 	int pocet_riadkov = 1, cislo_riadku, znak_v_poli, typ_vozidla, datum_zo_suboru;
 	float cena_vozidla, odmena_pre_predajcu;
 	
-	// Zistenie riadkov v subore
+	
 	pocet_riadkov = pocet_riadkov_v_subore(subor);
 		
 	
-	// Vypis dokumentu podla pravidiel
-	//rewind(subor);
+	
+	
 	for (cislo_riadku = 0; cislo_riadku < pocet_riadkov / 6 + 1; cislo_riadku++){
 		
 		fgets(meno_zo_suboru, 50, subor);
@@ -108,13 +108,13 @@ char** nacitat_SPZ_do_pola (char **pole_SPZ, int *vytvorene_pole, FILE *subor, i
 	int i, j, pocet_riadkov = 1;
 	char znak;
 	
-	// Spocitanie riadkov v subore
-	// Pocet SPZ v subore
+	
+	
 	*pocet_SPZ = pocet_riadkov_v_subore(subor) / 6 + 1;
 	
 	
 	
-	// Dealokovanie predchadzajuceho pola SPZtiek, ak uz raz bolo vytvorene
+	
 	if (*vytvorene_pole == 1){
 		for (i = 0; i < (*pocet_SPZ); i++){
 			free(pole_SPZ[i]);
@@ -123,14 +123,14 @@ char** nacitat_SPZ_do_pola (char **pole_SPZ, int *vytvorene_pole, FILE *subor, i
 	}
 	*vytvorene_pole = 1;
 	
-	// Alokovanie dvojrozmerneho pola pre SPZtky
+	
 	pole_SPZ = (char **) malloc((*pocet_SPZ)* sizeof(char *));
 	for (i = 0; i < (*pocet_SPZ); i++){
 		pole_SPZ[i] = (char *) malloc(8* sizeof(char));
 	}
 	
 	
-	// Naplnenie pola SPZtkami
+	// Naplnenie pola SPZtkami zo suboru, cykly sluzia ako offset
 	rewind(subor);
 	for (i = 0; i < (*pocet_SPZ); i++){
 		do{
@@ -157,7 +157,7 @@ char** nacitat_SPZ_do_pola (char **pole_SPZ, int *vytvorene_pole, FILE *subor, i
 void vypis_SPZ_z_pola (char **pole_SPZ, int vytvorene_pole, int pocet_SPZ){
 	int poradove_cislo, cislo_znaku;
 	
-	// Vypis pola SPZtiek
+	
 	if (vytvorene_pole == 0) printf("Pole nie je vytvorene\n");
 	else{
 		for (poradove_cislo = 0; poradove_cislo < pocet_SPZ; poradove_cislo++){
@@ -175,7 +175,7 @@ int main(){
 	int otvoreny_subor = 0, vytvorene_pole = 0, pocet_SPZ, datum, poradie_v_poli;
 	char pismenko, **pole_SPZ;
 	
-	// Vyber jednotlivych funkcii
+	
 	while (1){
 		
 		scanf("%c", &pismenko);
@@ -194,7 +194,7 @@ int main(){
 				vypis_SPZ_z_pola (pole_SPZ, vytvorene_pole, pocet_SPZ);
 				break;
 			case 'k': 
-				// Vycistenie pamate + zatvorenie suboru
+				
 				if (vytvorene_pole == 1){
 					for (poradie_v_poli = 0; poradie_v_poli < pocet_SPZ; poradie_v_poli++){
 						free(pole_SPZ[poradie_v_poli]);
