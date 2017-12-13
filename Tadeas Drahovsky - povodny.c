@@ -45,9 +45,9 @@ FILE* otvorenie_a_vypis_suboru (int *otvoreny_subor){
 }
 
 
-void vypis_odmien (FILE *subor, int datum){
-	char meno_zo_suboru[50], SPZ_zo_suboru[8], znak, akt_dat[9];
-	int pocet_riadkov = 1, cislo_riadku, j = 10000000, znak_v_poli, typ_vozidla, akt_dat_int = 0;
+void vypis_odmien (FILE *subor, int zadany_datum){
+	char meno_zo_suboru[50], SPZ_zo_suboru[8], znak;
+	int pocet_riadkov = 1, cislo_riadku, znak_v_poli, typ_vozidla, datum_zo_suboru;
 	float cena_vozidla, odmena_pre_predajcu;
 	
 	// Zistenie riadkov v subore
@@ -56,53 +56,38 @@ void vypis_odmien (FILE *subor, int datum){
 		znak = fgetc(subor);
 		if(znak == '\n') pocet_riadkov++;
 	}
-	while (znak != EOF);
-	
-	// Ziskanie casu
-	akt_dat_int = datum;
-	
+	while (znak != EOF);	
 	
 	// Vypis dokumentu podla pravidiel
 	rewind(subor);
-	for (cislo_riadku = 0; cislo_riadku < pocet_riadkov; cislo_riadku++){
-		switch (cislo_riadku % 6){
-			case 0: fgets(meno_zo_suboru, 50, subor);
-				break;
-			case 1: fgets(SPZ_zo_suboru, 8, subor);
-				break;
-			case 2: fscanf(subor, "%d", &typ_vozidla);
-				break;
-			case 3: fscanf(subor, "%f", &cena_vozidla);
-				break;
-			case 4: fscanf(subor, "%d", &datum);
-				fgetc(subor);
-				
-				if ((akt_dat_int - datum) >= 10000){
-					if (typ_vozidla == 1) odmena_pre_predajcu = cena_vozidla * 15 / 1000;
-					else odmena_pre_predajcu = cena_vozidla * 22 / 1000;
-					
-					for (znak_v_poli = 0; znak_v_poli < 50; znak_v_poli++){
-						if (meno_zo_suboru[znak_v_poli] == '\n') break;
-						putchar(meno_zo_suboru[znak_v_poli]);
-					}
-					putchar(' ');
-					
-					for (znak_v_poli = 0; znak_v_poli < 8; znak_v_poli++){
-						if (SPZ_zo_suboru[znak_v_poli] == '\n') break;
-						putchar(SPZ_zo_suboru[znak_v_poli]);
-					}
-					putchar(' ');
-					
-					printf("%.2f", odmena_pre_predajcu);
-					putchar('\n');
-				}
-				
-				do{
-					znak = fgetc(subor);
-					if(znak == '\n') break;
-				}
-				while (znak != EOF);
-				break;
+	for (cislo_riadku = 0; cislo_riadku < pocet_riadkov / 6 + 1; cislo_riadku++){
+		
+		fgets(meno_zo_suboru, 50, subor);
+		fgets(SPZ_zo_suboru, 8, subor);
+		fscanf(subor, "%d", &typ_vozidla);
+		fscanf(subor, "%f", &cena_vozidla);
+		fscanf(subor, "%d", &datum_zo_suboru);
+		fgetc(subor);
+		fgetc(subor);
+			
+		if ((zadany_datum - datum_zo_suboru) >= 10000){
+			if (typ_vozidla == 1) odmena_pre_predajcu = cena_vozidla * 15 / 1000;
+			else odmena_pre_predajcu = cena_vozidla * 22 / 1000;
+			
+			for (znak_v_poli = 0; znak_v_poli < 50; znak_v_poli++){
+				if (meno_zo_suboru[znak_v_poli] == '\n') break;
+				putchar(meno_zo_suboru[znak_v_poli]);
+			}
+			putchar(' ');
+			
+			for (znak_v_poli = 0; znak_v_poli < 8; znak_v_poli++){
+				if (SPZ_zo_suboru[znak_v_poli] == '\n') break;
+				putchar(SPZ_zo_suboru[znak_v_poli]);
+			}
+			putchar(' ');
+			
+			printf("%.2f", odmena_pre_predajcu);
+			putchar('\n');
 		}
 	}
 }
