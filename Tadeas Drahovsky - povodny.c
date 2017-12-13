@@ -1,9 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+int pocet_riadkov_v_subore (FILE *subor){
+	
+	int pocet_riadkov = 1;
+	char znak;
+	
+	rewind(subor);
+	
+	do{
+		znak = fgetc(subor);
+		if(znak == '\n') pocet_riadkov++;
+	}
+	while (znak != EOF);
+	
+	rewind(subor);
+	
+	return pocet_riadkov;
+}
+
+
 FILE* otvorenie_a_vypis_suboru (int *otvoreny_subor){
 	FILE *subor;
-	int cislo_riadku, pocet_riadkov = 1;
+	int cislo_riadku, pocet_riadkov;
 	char znak, *jeden_riadok;
 	
 	// Test + otvorenie suboru
@@ -13,14 +33,9 @@ FILE* otvorenie_a_vypis_suboru (int *otvoreny_subor){
 	}
 	else *otvoreny_subor = 1;
 	
-	// Spocitanie riadkov v subore
-	do{
-		znak = fgetc(subor);
-		if(znak == '\n') pocet_riadkov++;
-	}
-	while (znak != EOF);
+	pocet_riadkov = pocet_riadkov_v_subore(subor);
 	
-	rewind(subor);
+	//rewind(subor);
 	jeden_riadok = (char *) malloc(50* sizeof(char));
 	
 	// Vypis suboru
@@ -51,15 +66,11 @@ void vypis_odmien (FILE *subor, int zadany_datum){
 	float cena_vozidla, odmena_pre_predajcu;
 	
 	// Zistenie riadkov v subore
-	rewind(subor);
-	do{
-		znak = fgetc(subor);
-		if(znak == '\n') pocet_riadkov++;
-	}
-	while (znak != EOF);	
+	pocet_riadkov = pocet_riadkov_v_subore(subor);
+		
 	
 	// Vypis dokumentu podla pravidiel
-	rewind(subor);
+	//rewind(subor);
 	for (cislo_riadku = 0; cislo_riadku < pocet_riadkov / 6 + 1; cislo_riadku++){
 		
 		fgets(meno_zo_suboru, 50, subor);
@@ -98,16 +109,10 @@ char** nacitat_SPZ_do_pola (char **pole_SPZ, int *vytvorene_pole, FILE *subor, i
 	char znak;
 	
 	// Spocitanie riadkov v subore
-	rewind(subor);
-	do{
-		znak = fgetc(subor);
-		if(znak == '\n') pocet_riadkov++;
-	}
-	while (znak != EOF);
-	
 	// Pocet SPZ v subore
-	pocet_riadkov = (pocet_riadkov - 1) / 6;
-	*pocet_SPZ = (pocet_riadkov + 1);
+	*pocet_SPZ = pocet_riadkov_v_subore(subor) / 6 + 1;
+	
+	
 	
 	// Dealokovanie predchadzajuceho pola SPZtiek, ak uz raz bolo vytvorene
 	if (*vytvorene_pole == 1){
