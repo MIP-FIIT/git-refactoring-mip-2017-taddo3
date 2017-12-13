@@ -165,13 +165,15 @@ char** nacitat_SPZ_do_pola (char **pole_SPZ, int *vytvorene_pole, FILE *subor, i
 
 
 void vypis_SPZ_z_pola (char **pole_SPZ, int vytvorene_pole, int pocet_SPZ){
-	int poradove_cislo;
+	int poradove_cislo, cislo_znaku;
 	
 	// Vypis pola SPZtiek
 	if (vytvorene_pole == 0) printf("Pole nie je vytvorene\n");
 	else{
 		for (poradove_cislo = 0; poradove_cislo < pocet_SPZ; poradove_cislo++){
-			printf("%c%c %c%c%c %c%c", pole_SPZ[poradove_cislo][0], pole_SPZ[poradove_cislo][1], pole_SPZ[poradove_cislo][2], pole_SPZ[poradove_cislo][3], pole_SPZ[poradove_cislo][4], pole_SPZ[poradove_cislo][5], pole_SPZ[poradove_cislo][6]);
+			for (cislo_znaku = 0; cislo_znaku <= 6; cislo_znaku++){
+				printf("%c", pole_SPZ[poradove_cislo][cislo_znaku]);
+			}
 			printf("\n");
 		}
 	}
