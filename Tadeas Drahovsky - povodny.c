@@ -20,7 +20,7 @@ FILE* otvorenie_a_vypis_suboru (int *otvoreny_subor){
 	}
 	while (znak != EOF);
 	
-	fseek(subor, 0, SEEK_SET );
+	rewind(subor);
 	jeden_riadok = (char *) malloc(50* sizeof(char));
 	
 	// Vypis suboru
@@ -51,7 +51,7 @@ void vypis_odmien (FILE *subor, int datum){
 	float cena_vozidla, odmena_pre_predajcu;
 	
 	// Zistenie riadkov v subore
-	fseek(subor, 0, SEEK_SET );
+	rewind(subor);
 	do{
 		znak = fgetc(subor);
 		if(znak == '\n') pocet_riadkov++;
@@ -63,7 +63,7 @@ void vypis_odmien (FILE *subor, int datum){
 	
 	
 	// Vypis dokumentu podla pravidiel
-	fseek(subor, 0, SEEK_SET );
+	rewind(subor);
 	for (cislo_riadku = 0; cislo_riadku < pocet_riadkov; cislo_riadku++){
 		switch (cislo_riadku % 6){
 			case 0: fgets(meno_zo_suboru, 50, subor);
@@ -113,7 +113,7 @@ char** nacitat_SPZ_do_pola (char **pole_SPZ, int *vytvorene_pole, FILE *subor, i
 	char znak;
 	
 	// Spocitanie riadkov v subore
-	fseek(subor, 0, SEEK_SET );
+	rewind(subor);
 	do{
 		znak = fgetc(subor);
 		if(znak == '\n') pocet_riadkov++;
@@ -141,7 +141,7 @@ char** nacitat_SPZ_do_pola (char **pole_SPZ, int *vytvorene_pole, FILE *subor, i
 	
 	
 	// Naplnenie pola SPZtkami
-	fseek(subor, 0, SEEK_SET );
+	rewind(subor);
 	for (i = 0; i < (*pocet_SPZ); i++){
 		do{
 			znak = fgetc(subor);
